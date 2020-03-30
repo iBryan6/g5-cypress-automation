@@ -8,3 +8,7 @@
     "cms_auth_password": ""
 }
 4. To run the test machine use `cypress open`.
+
+## Generate reports using mochawesome
+
+1. You can generate reports by running `cypress run --reporter mochawesome`, where it will generate a video, screenshots and an HTML page showing details of the test.

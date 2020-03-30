@@ -11,5 +11,9 @@
   "devDependencies": {
     "cypress": "^4.3.0",
     "cypress-xpath": "^1.4.0"
+  },
+  "dependencies": {
+    "mocha": "^7.1.1",
+    "mochawesome": "^5.0.0"
   }
 }
