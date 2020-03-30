@@ -8,7 +8,7 @@
     "reporterOptions": {
         "reportDir": "cypress/report/mochawesome-report",
         "overwrite": false,
-        "html": false,
+        "html": true,
         "json": true,
         "timestamp": "mmddyyyy_HHMMss"
      }

@@ -12,3 +12,4 @@
 ## Generate reports using mochawesome
 
 1. You can generate reports by running `cypress run --reporter mochawesome`, where it will generate a video, screenshots and an HTML page showing details of the test.
+2. If you wish you run a specific file you need to run `cypress run --spec cypress/integration/examples/actions.spec.js --reporter mochawesome`.
