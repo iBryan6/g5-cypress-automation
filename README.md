@@ -7,4 +7,4 @@
     "cms_auth_email": "",
     "cms_auth_password": ""
 }
-4. To run the test machine use `cypress open`
+4. To run the test machine use `cypress open`.
