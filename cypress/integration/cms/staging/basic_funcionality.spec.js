@@ -50,7 +50,7 @@ context("Basic Functionalities", () => {
               cy.get(".btn.delete-action.delete.ember-view").click();
               cy.wait(5000);
               cy.xpath("/html/body/div[16]/div[7]/div/button").should("be.visible");
-              cy.get("/html/body/div[16]/div[7]/div/button").click();
+              cy.xpath("/html/body/div[16]/div[7]/div/button").click();
             }
           });
         }
