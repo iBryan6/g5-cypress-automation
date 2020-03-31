@@ -9,7 +9,7 @@
     "cms_auth_password": ""
 }
 ```
-4. To run the test machine use `cypress open`.
+4. To run the test machine use `cypress open` or `npm run test`.
 
 ## Generate reports using mochawesome
 
