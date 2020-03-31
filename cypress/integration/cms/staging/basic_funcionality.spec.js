@@ -176,8 +176,30 @@ context("Basic Functionalities", () => {
   });
 
   //6 TC - Disable and enable page test
+  it.only("6. Disable and enable page test", () => {
+    loadFirstLoc();
+    //Change to disabled status
+    cy.xpath(
+      `//span[.='NEW PAGE NAME']/following-sibling::span/a[.=' Settings ']`
+    ).click({ force: true });
+    cy.get(".page-status-toggle")
+      .find("span.lever")
+      .click({ force: true });
+    cy.get(".agree-button").click({ force: true });
+    cy.contains("Success").should("be.visible");
+    cy.wait(3000);
+    //Change to enabled status
+    cy.xpath(
+      `//span[.='NEW PAGE NAME']/following-sibling::span/a[.=' Settings ']`
+    ).click({ force: true });
+    cy.get(".page-status-toggle")
+      .find("span.lever")
+      .click({ force: true });
+    cy.get(".agree-button").click({ force: true });
+    cy.contains("Success").should("be.visible");
+  });
   //7 TC - Import page layout test
   //8 TC - Import page layout from remote CMS test
-  //9 TC - Clone location test 
+  //9 TC - Clone location test
   //10 TC - Clone location from remote CMS test
 });
