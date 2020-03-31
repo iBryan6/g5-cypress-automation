@@ -80,7 +80,7 @@ context("Basic Functionalities", () => {
   });
 
   //3 TC
-  it.only("Change page title", () => {
+  it("Change page name", () => {
     loadFirstLoc();
     cy.xpath(
       `//span[.='${pageName}']/following-sibling::span/a[.=' Settings ']`
@@ -97,8 +97,32 @@ context("Basic Functionalities", () => {
       .should("have.value", "NEW PAGE NAME");
     cy.get(".agree-button").click({ force: true });
     cy.contains("Success").should("be.visible");
-    pageName = "NEW PAGE NAME";
-    cy.contains(pageName).should("be.visible");
+    cy.contains("NEW PAGE NAME").should("be.visible");
   });
-  
+
+  //4 TC
+  it.only("Change page description", () => {
+    loadFirstLoc();
+    cy.xpath(
+      `//span[.='NEW PAGE NAME']/following-sibling::span/a[.=' Settings ']`
+    ).click({ force: true });
+    cy.xpath(
+      "/html/body/div[5]/main/div/div/div/div[4]/div/div/div[4]/div/ul/li[3]/div/div[2]/div[1]/div[3]/input"
+    )
+      .clear()
+      .should("have.value", "");
+    cy.xpath(
+      "/html/body/div[5]/main/div/div/div/div[4]/div/div/div[4]/div/ul/li[3]/div/div[2]/div[1]/div[3]/input"
+    )
+      .type("NEW PAGE DESCRIPTION")
+      .should("have.value", "NEW PAGE DESCRIPTION");
+    cy.get(".agree-button").click({ force: true });
+    cy.contains("Success").should("be.visible");
+    cy.xpath(
+      `//span[.='NEW PAGE NAME']/following-sibling::span/a[.=' Settings ']`
+    ).click({ force: true });
+    cy.xpath(
+      "/html/body/div[5]/main/div/div/div/div[4]/div/div/div[4]/div/ul/li[3]/div/div[2]/div[1]/div[3]/input"
+    ).should("have.value", "NEW PAGE DESCRIPTION");
+  });
 });
