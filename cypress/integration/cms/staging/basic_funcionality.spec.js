@@ -2,7 +2,16 @@
 
 context("Basic Functionalities", () => {
   //VARIABLES
-  let pageName = "NEW PAGE";
+  var pageName = "NEW PAGE";
+
+  //REUSABLE FUNCTIONS
+  const loadFirstLoc = () => {
+    cy.xpath(
+      "/html/body/div[5]/main/div/div/div/div/div/div[2]/div[5]/ul[2]/li[1]/div/div/div[2]/div[3]/a[1]"
+    ).click();
+    cy.wait(5000);
+    cy.contains("h4", "Navigation Pages").should("be.visible");
+  };
 
   beforeEach(() => {
     cy.visit(Cypress.env("BASE_URL_STAGING"));
@@ -12,6 +21,7 @@ context("Basic Functionalities", () => {
     );
   });
 
+  //1 TC
   it("Login to CMS", () => {
     cy.visit("https://auth.g5search.com");
     //Type Email
@@ -28,14 +38,9 @@ context("Basic Functionalities", () => {
     cy.contains("Signed in successfully.").should("be.visible");
   });
 
-  it.only("Create new Page in a location", () => {
-    //Load first location edit
-    cy.xpath(
-      "/html/body/div[5]/main/div/div/div/div/div/div[2]/div[5]/ul[2]/li[1]/div/div/div[2]/div[3]/a[1]"
-    ).click();
-    cy.wait(5000);
-    cy.contains("h4", "Navigation Pages").should("be.visible");
- 
+  //2 TC
+  it("Create new Page in a location", () => {
+    loadFirstLoc();
 
     //Check if pages exists
     cy.xpath("/html/body/div[5]/main/div/div/div/div[4]/div/div/div[4]").within(
@@ -49,7 +54,9 @@ context("Basic Functionalities", () => {
               ).click();
               cy.get(".btn.delete-action.delete.ember-view").click();
               cy.wait(5000);
-              cy.xpath("/html/body/div[16]/div[7]/div/button").should("be.visible");
+              cy.xpath("/html/body/div[16]/div[7]/div/button").should(
+                "be.visible"
+              );
               cy.xpath("/html/body/div[16]/div[7]/div/button").click();
             }
           });
@@ -71,4 +78,27 @@ context("Basic Functionalities", () => {
     cy.contains("Success").should("be.visible");
     cy.contains(pageName).should("be.visible");
   });
+
+  //3 TC
+  it.only("Change page title", () => {
+    loadFirstLoc();
+    cy.xpath(
+      `//span[.='${pageName}']/following-sibling::span/a[.=' Settings ']`
+    ).click();
+    cy.xpath(
+      "/html/body/div[5]/main/div/div/div/div[4]/div/div/div[4]/div/ul/li/div/div[2]/div[1]/div[1]/input"
+    )
+      .clear()
+      .should("have.value", "");
+    cy.xpath(
+      "/html/body/div[5]/main/div/div/div/div[4]/div/div/div[4]/div/ul/li/div/div[2]/div[1]/div[1]/input"
+    )
+      .type("NEW PAGE NAME")
+      .should("have.value", "NEW PAGE NAME");
+    cy.get(".agree-button").click({ force: true });
+    cy.contains("Success").should("be.visible");
+    pageName = "NEW PAGE NAME";
+    cy.contains(pageName).should("be.visible");
+  });
+  
 });
