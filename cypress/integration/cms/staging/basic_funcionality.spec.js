@@ -22,7 +22,7 @@ context("Basic Functionalities", () => {
   });
 
   //1 TC
-  it("1. Login to CMS", () => {
+  it("1. Login CMS test", () => {
     cy.visit("https://auth.g5search.com");
     //Type Email
     cy.get("#user_email")
@@ -39,7 +39,7 @@ context("Basic Functionalities", () => {
   });
 
   //2 TC
-  it("2. Create new Page in a location", () => {
+  it("2. Create new page test", () => {
     loadFirstLoc();
     //Check if pages exists
     cy.xpath("/html/body/div[5]/main/div/div/div/div[4]/div/div/div[4]").within(
@@ -76,7 +76,7 @@ context("Basic Functionalities", () => {
   });
 
   //3 TC
-  it("3. Change page name", () => {
+  it("3. Change page name test", () => {
     loadFirstLoc();
     cy.xpath(
       `//span[.='${pageName}']/following-sibling::span/a[.=' Settings ']`
@@ -94,7 +94,7 @@ context("Basic Functionalities", () => {
   });
 
   //4 TC
-  it("4. Change page description", () => {
+  it("4. Change page description test", () => {
     loadFirstLoc();
     cy.xpath(
       `//span[.='${pageName}']/following-sibling::span/a[.=' Settings ']`
@@ -116,7 +116,7 @@ context("Basic Functionalities", () => {
   });
 
   //5 TC
-  it("5. Change page child/parent status", () => {
+  it("5. Change page child/parent status test", () => {
     loadFirstLoc();
     //Create parent page
     cy.contains(" Create a New Page").click({ force: true });
@@ -174,4 +174,10 @@ context("Basic Functionalities", () => {
       .should("be.visible")
       .click();
   });
+
+  //6 TC - Disable and enable page test
+  //7 TC - Import page layout test
+  //8 TC - Import page layout from remote CMS test
+  //9 TC - Clone location test 
+  //10 TC - Clone location from remote CMS test
 });
