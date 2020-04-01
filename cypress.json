@@ -11,5 +11,7 @@
         "html": true,
         "json": true,
         "timestamp": "mmddyyyy_HHMMss"
-     }
+     },
+     "videosFolder": "cypress/report/videos",
+     "screenshotsFolder": "cypress/report/screenshots"
 }
