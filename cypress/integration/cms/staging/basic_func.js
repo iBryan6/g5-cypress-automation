@@ -39,13 +39,13 @@ context("Basic Functionalities", () => {
   });
 
   //2 TC
-  it("2. Create new page test", () => {
+  it.only("2. Create new page test", () => {
     loadFirstLoc();
     //Check if pages exists
     cy.xpath("/html/body/div[5]/main/div/div/div/div[4]/div/div/div[4]").within(
       body => {
         if (body.find("span").length > 0) {
-          cy.get("span.name-text").then($body => {
+          cy.get("span.name-text").contains(pageName).then($body => {
             if ($body.text().includes(pageName)) {
               //Deletes page if it exists
               cy.xpath(
@@ -176,7 +176,7 @@ context("Basic Functionalities", () => {
   });
 
   //6 TC - Disable and enable page test
-  it.only("6. Disable and enable page test", () => {
+  it("6. Disable and enable page test", () => {
     loadFirstLoc();
     //Change to disabled status
     cy.xpath(
