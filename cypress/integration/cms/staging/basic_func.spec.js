@@ -118,9 +118,8 @@ context("Basic Functionalities", () => {
   });
 
   //5 TC
-  it.only("5. Change page child/parent status test", () => {
+  it("5. Change page child/parent status test", () => {
     loadFirstLoc();
-    pageName = "NEW PAGE NAME";
     //Create parent page
     cy.contains(" Create a New Page").click({ force: true });
     cy.get("input.validate.ember-text-field.ember-view")
@@ -184,7 +183,6 @@ context("Basic Functionalities", () => {
   //6 TC - Disable and enable page test
   it("6. Disable and enable page test", () => {
     loadFirstLoc();
-
     //Change to disabled status
     cy.xpath(
       `//span[.='${pageName}']/following-sibling::span/a[.=' Settings ']`
@@ -217,12 +215,13 @@ context("Basic Functionalities", () => {
   });
 
   //7 TC - Import page layout test
-  it("7. Import page layout", () => {
+  it("7. Import page layout test", () => {
     loadFirstLoc();
-    //Change to disabled status
+    //Import page
     cy.xpath(
       `//span[.='NEW PAGE NAME']/following-sibling::span/a[.=' Settings ']`
     ).click({ force: true });
+    //Verify page was imported
   });
   //8 TC - Import page layout from remote CMS test
 
