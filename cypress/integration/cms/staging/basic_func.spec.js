@@ -45,19 +45,21 @@ context("Basic Functionalities", () => {
     cy.xpath("/html/body/div[5]/main/div/div/div/div[4]/div/div/div[4]").within(
       body => {
         if (body.find("span").length > 0) {
-          cy.get("span.name-text").contains(pageName).then($body => {
-            if ($body.text().includes(pageName)) {
-              //Deletes page if it exists
-              cy.xpath(
-                `//span[.='${$body.text()}']/following-sibling::span/a[.=' Settings ']`
-              ).click({ force: true });
-              cy.get(".btn.delete-action.delete.ember-view").click();
-              cy.wait(5000);
-              cy.xpath("/html/body/div[16]/div[7]/div/button")
-                .should("be.visible")
-                .click();
-            }
-          });
+          cy.get("span.name-text")
+            .contains(pageName)
+            .then($body => {
+              if ($body.text().includes(pageName)) {
+                //Deletes page if it exists
+                cy.xpath(
+                  `//span[.='${$body.text()}']/following-sibling::span/a[.=' Settings ']`
+                ).click({ force: true });
+                cy.get(".btn.delete-action.delete.ember-view").click();
+                cy.wait(5000);
+                cy.xpath("/html/body/div[16]/div[7]/div/button")
+                  .should("be.visible")
+                  .click();
+              }
+            });
         }
       }
     );
@@ -116,8 +118,9 @@ context("Basic Functionalities", () => {
   });
 
   //5 TC
-  it("5. Change page child/parent status test", () => {
+  it.only("5. Change page child/parent status test", () => {
     loadFirstLoc();
+    pageName = "NEW PAGE NAME";
     //Create parent page
     cy.contains(" Create a New Page").click({ force: true });
     cy.get("input.validate.ember-text-field.ember-view")
@@ -173,33 +176,56 @@ context("Basic Functionalities", () => {
     cy.xpath("/html/body/div[16]/div[7]/div/button")
       .should("be.visible")
       .click();
+    cy.xpath(
+      `//span[.='NEW PARENT PAGE']/following-sibling::span/a[.=' Settings ']`
+    ).should("have.length", 0);
   });
 
   //6 TC - Disable and enable page test
   it("6. Disable and enable page test", () => {
     loadFirstLoc();
+
+    //Change to disabled status
+    cy.xpath(
+      `//span[.='${pageName}']/following-sibling::span/a[.=' Settings ']`
+    ).click({ force: true });
+    cy.get(".page-status-toggle")
+      .find("span.lever")
+      .click({ force: true });
+    cy.get(".agree-button").click({ force: true });
+    cy.contains("Success").should("be.visible");
+
+    //verify it's disabled
+    cy.xpath(
+      `//span[.='${pageName}']/following-sibling::span/a[.=' Settings ']`
+    ).click({ force: true });
+    cy.get(".page-status-toggle")
+      .find("input[type=checkbox]:checked+.lever")
+      .should("have.length", 0);
+
+    //Change to enabled status
+    cy.get(".page-status-toggle")
+      .find("span.lever")
+      .click({ force: true });
+    cy.get(".agree-button").click({ force: true });
+    cy.contains("Success").should("be.visible");
+
+    //verify it's enabled
+    cy.get(".page-status-toggle")
+      .find("input[type=checkbox]:checked+.lever")
+      .should("have.length", 1);
+  });
+
+  //7 TC - Import page layout test
+  it("7. Import page layout", () => {
+    loadFirstLoc();
     //Change to disabled status
     cy.xpath(
       `//span[.='NEW PAGE NAME']/following-sibling::span/a[.=' Settings ']`
     ).click({ force: true });
-    cy.get(".page-status-toggle")
-      .find("span.lever")
-      .click({ force: true });
-    cy.get(".agree-button").click({ force: true });
-    cy.contains("Success").should("be.visible");
-    cy.wait(3000);
-    //Change to enabled status
-    cy.xpath(
-      `//span[.='NEW PAGE NAME']/following-sibling::span/a[.=' Settings ']`
-    ).click({ force: true });
-    cy.get(".page-status-toggle")
-      .find("span.lever")
-      .click({ force: true });
-    cy.get(".agree-button").click({ force: true });
-    cy.contains("Success").should("be.visible");
   });
-  //7 TC - Import page layout test
   //8 TC - Import page layout from remote CMS test
+
   //9 TC - Clone location test
   //10 TC - Clone location from remote CMS test
 });
