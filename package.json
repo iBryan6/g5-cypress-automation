@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "cypress open"
+    "test": "cypress open",
+    "cypress:run:staging": "cypress run --env TESTING_ENV=staging --reporter mochawesome",
+    "cypress:run:prime": "cypress run --env TESTING_ENV=prime --reporter mochawesome",
+    "cypress:run:prod": "cypress run --env TESTING_ENV=prod --reporter mochawesome"
   },
   "author": "Bryan Argandona",
   "license": "ISC",

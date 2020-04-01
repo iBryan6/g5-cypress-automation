@@ -9,9 +9,13 @@
     "cms_auth_password": ""
 }
 ```
-4. To run the test machine use `cypress open` or `npm run test`.
+4. To open Cypress UI test machine use `cypress open` or `npm run test`.
 
 ## Generate reports using mochawesome
 
-1. You can generate reports by running `cypress run --reporter mochawesome`, where it will generate a video, screenshots and an HTML page showing details of the test.
-2. If you wish you run a specific file you need to run `cypress run --spec cypress/integration/examples/actions.spec.js --reporter mochawesome`.
+1. You can generate reports where it will generate a video, screenshots and an HTML page showing details of the tests.
+    `npm run cypress:run:staging` generates a full staging report
+    `npm run cypress:run:prime` generates a full prime report
+    `npm run cypress:run:prod` generates a full prod report
+    
+2. If you wish you run a specific file you need to run something like `cypress run --env TESTING_ENV=staging --spec cypress/integration/cms/basic_func.spec.js --reporter mochawesome`.

@@ -14,7 +14,16 @@ context("Basic Functionalities", () => {
   };
 
   beforeEach(() => {
-    cy.visit(Cypress.env("BASE_URL_STAGING"));
+    switch (Cypress.env("TESTING_ENV")) {
+      case "prime":
+        cy.visit(Cypress.env("BASE_URL_PRIME"));
+        break;
+      case "staging":
+        cy.visit(Cypress.env("BASE_URL_STAGING"));
+        break;
+      default:
+        cy.visit(Cypress.env("BASE_URL_PROD"));
+    }
     Cypress.Cookies.preserveOnce(
       "_g5-cms_session",
       "_g5-authentication_session"
@@ -39,12 +48,12 @@ context("Basic Functionalities", () => {
   });
 
   //2 TC
-  it("2. Create new page test", () => {
+  it.only("2. Create new page test", () => {
     loadFirstLoc();
     //Check if pages exists
     cy.xpath("/html/body/div[5]/main/div/div/div/div[4]/div/div/div[4]").within(
       body => {
-        if (body.find("span").length > 0) {
+        if (body.text().includes(pageName)) {
           cy.get("span.name-text")
             .contains(pageName)
             .then($body => {
