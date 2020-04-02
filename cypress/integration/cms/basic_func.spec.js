@@ -187,10 +187,11 @@ context("Basic Functionalities", () => {
     cy.contains("Success").should("be.visible");
 
     //Check if it's a parent page
+    cy.reload();
+    cy.wait(3000);
     cy.xpath(
       `//span[.='${pageName}']/following-sibling::span/a[.=' Settings ']`
     ).click({ force: true });
-    cy.wait(3000);
     cy.get(".page-status-row")
       .find("input.select-dropdown")
       .should("have.value", "Add to Parent Page...");
