@@ -57,17 +57,15 @@ context("Basic Functionalities", () => {
           cy.get("span.name-text")
             .contains(pageName)
             .then($body => {
-              if ($body.text().includes(pageName)) {
-                //Deletes page if it exists
-                cy.xpath(
-                  `//span[.='${$body.text()}']/following-sibling::span/a[.=' Settings ']`
-                ).click({ force: true });
-                cy.get(".btn.delete-action.delete.ember-view").click();
-                cy.wait(5000);
-                cy.xpath("/html/body/div[16]/div[7]/div/button")
-                  .should("be.visible")
-                  .click();
-              }
+              //Deletes page if it exists
+              cy.xpath(
+                `//span[.='${$body.text()}']/following-sibling::span/a[.=' Settings ']`
+              ).click({ force: true });
+              cy.get(".btn.delete-action.delete.ember-view").click();
+              cy.wait(5000);
+              cy.xpath("/html/body/div[16]/div[7]/div/button")
+                .should("be.visible")
+                .click();
             });
         }
       }
@@ -129,6 +127,28 @@ context("Basic Functionalities", () => {
   //5 TC
   it("5. Change page child/parent status test", () => {
     loadFirstLoc();
+    //Check if parent page exists
+    cy.xpath("/html/body/div[5]/main/div/div/div/div[4]/div/div/div[4]").within(
+      body => {
+        if (body.text().includes("NEW PARENT PAGE")) {
+          cy.get("span.name-text")
+            .contains("NEW PARENT PAGE")
+            .then($body => {
+              //Deletes page if it exists
+              cy.xpath(
+                `//span[.='${$body.text()}']/following-sibling::span/a[.=' Settings ']`
+              ).click({ force: true });
+              cy.get(".btn.delete-action.delete.ember-view").click();
+              cy.wait(5000);
+              cy.xpath("/html/body/div[16]/div[7]/div/button")
+                .should("be.visible")
+                .click();
+              cy.wait(5000);
+            });
+        }
+      }
+    );
+
     //Create parent page
     cy.contains(" Create a New Page").click({ force: true });
     cy.get("input.validate.ember-text-field.ember-view")
@@ -170,6 +190,7 @@ context("Basic Functionalities", () => {
     cy.xpath(
       `//span[.='${pageName}']/following-sibling::span/a[.=' Settings ']`
     ).click({ force: true });
+    cy.wait(3000);
     cy.get(".page-status-row")
       .find("input.select-dropdown")
       .should("have.value", "Add to Parent Page...");
