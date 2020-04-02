@@ -48,7 +48,7 @@ context("Basic Functionalities", () => {
   });
 
   //2 TC
-  it.only("2. Create new page test", () => {
+  it("2. Create new page test", () => {
     loadFirstLoc();
     //Check if pages exists
     cy.xpath("/html/body/div[5]/main/div/div/div/div[4]/div/div/div[4]").within(
