@@ -1,9 +1,9 @@
 {
     "env": {
         "TESTING_ENV":"staging",
-        "BASE_URL_STAGING": "https://content-management-system-content-staging.g5devops.com/clients/g5-c-5mc7konuw-ba-test-cave/websites",
-        "BASE_URL_PRIME": "https://content-management-system-content-staging.g5devops.com/clients/g5-c-5mc7konuw-ba-test-cave/websites",
-        "BASE_URL_PROD": "https://cms.g5marketingcloud.com/clients/g5-c-5g1te7c7n-byron/websites"
+        "BASE_URL_STAGING": "https://content-management-system-content-staging.g5devops.com",
+        "BASE_URL_PRIME": "https://content-management-system-content-staging.g5devops.com",
+        "BASE_URL_PROD": "https://cms.g5marketingcloud.com"
     },
     "reporter": "mochawesome",
     "reporterOptions": {

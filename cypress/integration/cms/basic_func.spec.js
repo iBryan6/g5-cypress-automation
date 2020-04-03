@@ -3,6 +3,7 @@
 context("Basic Functionalities", () => {
   //VARIABLES
   var pageName = "NEW PAGE";
+  var clientURN = "g5-c-5mc7konuw-ba-test-cave";
 
   //REUSABLE FUNCTIONS
   const loadFirstLoc = () => {
@@ -14,19 +15,32 @@ context("Basic Functionalities", () => {
     cy.contains("h4", "Navigation Pages").should("be.visible");
   };
 
-  beforeEach(() => {
+  before(() => {
     //Switch between environments
     switch (Cypress.env("TESTING_ENV")) {
       case "prime":
-        cy.visit(Cypress.env("BASE_URL_PRIME"));
+        cy.visit(
+          `${Cypress.env("BASE_URL_PRIME")}/clients/${clientURN}/websites`
+        );
+        break;
+      case "prod":
+        cy.visit(
+          `${Cypress.env("BASE_URL_PROD")}/clients/${clientURN}/websites`
+        );
         break;
       case "staging":
-        cy.visit(Cypress.env("BASE_URL_STAGING"));
+        cy.visit(
+          `${Cypress.env("BASE_URL_STAGING")}/clients/${clientURN}/websites`
+        );
         break;
       default:
-        cy.visit(Cypress.env("BASE_URL_PROD"));
+        cy.visit(
+          `${Cypress.env("BASE_URL_STAGING")}/clients/${clientURN}/websites`
+        );
     }
+  });
 
+  beforeEach(() => {
     //Save auth cookies to stay logged in
     Cypress.Cookies.preserveOnce(
       "_g5-cms_session",
