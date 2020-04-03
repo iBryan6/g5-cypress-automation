@@ -8,12 +8,14 @@ context("Basic Functionalities", () => {
   const loadFirstLoc = () => {
     cy.xpath(
       "/html/body/div[5]/main/div/div/div/div/div/div[2]/div[5]/ul[2]/li[1]/div/div/div[2]/div[3]/a[1]"
-    ).click();
-    cy.wait(5000);
+    )
+      .click()
+      .wait(5000);
     cy.contains("h4", "Navigation Pages").should("be.visible");
   };
 
   beforeEach(() => {
+    //Switch between environments
     switch (Cypress.env("TESTING_ENV")) {
       case "prime":
         cy.visit(Cypress.env("BASE_URL_PRIME"));
@@ -24,6 +26,8 @@ context("Basic Functionalities", () => {
       default:
         cy.visit(Cypress.env("BASE_URL_PROD"));
     }
+
+    //Save auth cookies to stay logged in
     Cypress.Cookies.preserveOnce(
       "_g5-cms_session",
       "_g5-authentication_session"
@@ -52,27 +56,26 @@ context("Basic Functionalities", () => {
     loadFirstLoc();
     //Check if pages exists
     cy.xpath("/html/body/div[5]/main/div/div/div/div[4]/div/div/div[4]").within(
-      body => {
+      (body) => {
         if (body.text().includes(pageName)) {
           cy.get("span.name-text")
             .contains(pageName)
-            .then($body => {
+            .then(($body) => {
               //Deletes page if it exists
               cy.xpath(
                 `//span[.='${$body.text()}']/following-sibling::span/a[.=' Settings ']`
               ).click({ force: true });
-              cy.get(".btn.delete-action.delete.ember-view").click();
-              cy.wait(5000);
+              cy.get(".btn.delete-action.delete.ember-view").click().wait(5000);
               cy.xpath("/html/body/div[16]/div[7]/div/button")
                 .should("be.visible")
-                .click();
+                .click()
+                .wait(5000);
             });
         }
       }
     );
 
     //Create new page
-    cy.wait(5000);
     cy.contains(" Create a New Page").click({ force: true });
     cy.get("input.validate.ember-text-field.ember-view")
       .eq(0)
@@ -129,21 +132,20 @@ context("Basic Functionalities", () => {
     loadFirstLoc();
     //Check if parent page exists
     cy.xpath("/html/body/div[5]/main/div/div/div/div[4]/div/div/div[4]").within(
-      body => {
+      (body) => {
         if (body.text().includes("NEW PARENT PAGE")) {
           cy.get("span.name-text")
             .contains("NEW PARENT PAGE")
-            .then($body => {
+            .then(($body) => {
               //Deletes page if it exists
               cy.xpath(
                 `//span[.='${$body.text()}']/following-sibling::span/a[.=' Settings ']`
               ).click({ force: true });
-              cy.get(".btn.delete-action.delete.ember-view").click();
-              cy.wait(5000);
+              cy.get(".btn.delete-action.delete.ember-view").click().wait(5000);
               cy.xpath("/html/body/div[16]/div[7]/div/button")
                 .should("be.visible")
-                .click();
-              cy.wait(5000);
+                .click()
+                .wait(5000);
             });
         }
       }
@@ -187,8 +189,7 @@ context("Basic Functionalities", () => {
     cy.contains("Success").should("be.visible");
 
     //Check if it's a parent page
-    cy.reload();
-    cy.wait(3000);
+    cy.reload().wait(3000);
     cy.xpath(
       `//span[.='${pageName}']/following-sibling::span/a[.=' Settings ']`
     ).click({ force: true });
@@ -201,8 +202,7 @@ context("Basic Functionalities", () => {
     cy.xpath(
       `//span[.='NEW PARENT PAGE']/following-sibling::span/a[.=' Settings ']`
     ).click({ force: true });
-    cy.get(".btn.delete-action.delete.ember-view").click();
-    cy.wait(5000);
+    cy.get(".btn.delete-action.delete.ember-view").click().wait(5000);
     cy.xpath("/html/body/div[16]/div[7]/div/button")
       .should("be.visible")
       .click();
@@ -211,16 +211,14 @@ context("Basic Functionalities", () => {
     ).should("have.length", 0);
   });
 
-  //6 TC - Disable and enable page test
+  //6 TC
   it("6. Disable and enable page test", () => {
     loadFirstLoc();
     //Change to disabled status
     cy.xpath(
       `//span[.='${pageName}']/following-sibling::span/a[.=' Settings ']`
     ).click({ force: true });
-    cy.get(".page-status-toggle")
-      .find("span.lever")
-      .click({ force: true });
+    cy.get(".page-status-toggle").find("span.lever").click({ force: true });
     cy.get(".agree-button").click({ force: true });
     cy.contains("Success").should("be.visible");
 
@@ -233,9 +231,7 @@ context("Basic Functionalities", () => {
       .should("have.length", 0);
 
     //Change to enabled status
-    cy.get(".page-status-toggle")
-      .find("span.lever")
-      .click({ force: true });
+    cy.get(".page-status-toggle").find("span.lever").click({ force: true });
     cy.get(".agree-button").click({ force: true });
     cy.contains("Success").should("be.visible");
 
@@ -245,17 +241,44 @@ context("Basic Functionalities", () => {
       .should("have.length", 1);
   });
 
-  //7 TC - Import page layout test
-  it("7. Import page layout test", () => {
+  //7 TC
+  it("7. Import remote page layout test", () => {
+    let remoteClient = "1-800 Self Storage - Client";
+    let remoteLoc =
+      "1-800-SELF-STORAGE.com - 1-800-Self-Storage.com on Greenfield";
     loadFirstLoc();
-    //Import page
-    cy.xpath(
-      `//span[.='NEW PAGE NAME']/following-sibling::span/a[.=' Settings ']`
-    ).click({ force: true });
-    //Verify page was imported
-  });
-  //8 TC - Import page layout from remote CMS test
 
-  //9 TC - Clone location test
-  //10 TC - Clone location from remote CMS test
+    //Import contact us page from first location from the list in 1-800 Self Storage - Client
+    cy.xpath(
+      `//span[.='${pageName}']/following-sibling::span/a[.=' Settings ']`
+    ).click({ force: true });
+    cy.get("div.page-layout").contains("Import Layout").click({ force: true });
+    cy.get("div.import-clients")
+      .contains("li", remoteClient)
+      .click({ force: true })
+      .wait(5000);
+    cy.get("div.import-websites")
+      .contains("li", remoteLoc)
+      .click({ force: true });
+    cy.get("div.import-pages")
+      .contains("li", "Contact Us")
+      .click({ force: true });
+    cy.get("a.import-layout.btn").click({ force: true }).wait(5000);
+    cy.get(".sa-confirm-button-container > .confirm").click();
+
+    //Verify it was cloned correctly by counting stripes on page
+    cy.contains("Success").should("be.visible");
+    cy.reload().wait(5000);
+    cy.xpath(
+      `//span[.='${pageName}']/following-sibling::span/a[.=' Settings ']`
+    )
+      .click({ force: true })
+      .wait(5000);
+    cy.get("div.page-layout")
+      .find(".sortable-item.ember-view")
+      .should("have.length", 2);
+  });
+
+  //8 TC
+  it("7. Clone remote location to CMS test", () => {});
 });
