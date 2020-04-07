@@ -1,6 +1,7 @@
 {
+    "defaultCommandTimeout": 10000,
     "env": {
-        "TESTING_ENV":"staging",
+        "TESTING_ENV": "staging",
         "BASE_URL_STAGING": "https://content-management-system-content-staging.g5devops.com",
         "BASE_URL_PRIME": "https://content-management-system-content-staging.g5devops.com",
         "BASE_URL_PROD": "https://cms.g5marketingcloud.com"
@@ -12,7 +13,7 @@
         "html": true,
         "json": true,
         "timestamp": "mmddyyyy_HHMMss"
-     },
-     "videosFolder": "cypress/report/videos",
-     "screenshotsFolder": "cypress/report/screenshots"
+    },
+    "videosFolder": "cypress/report/videos",
+    "screenshotsFolder": "cypress/report/screenshots"
 }

@@ -11,12 +11,10 @@ context("Basic Functionalities", () => {
       "/html/body/div[5]/main/div/div/div/div/div/div[2]/div[5]/ul[2]/li[1]/div/div/div[2]/div[3]/a[1]"
     )
       .click()
-      .wait(5000);
     cy.contains("h4", "Navigation Pages").should("be.visible");
   };
 
-  before(() => {
-    //Switch between environments
+  beforeEach(() => {
     switch (Cypress.env("TESTING_ENV")) {
       case "prime":
         cy.visit(
@@ -28,19 +26,11 @@ context("Basic Functionalities", () => {
           `${Cypress.env("BASE_URL_PROD")}/clients/${clientURN}/websites`
         );
         break;
-      case "staging":
-        cy.visit(
-          `${Cypress.env("BASE_URL_STAGING")}/clients/${clientURN}/websites`
-        );
-        break;
       default:
         cy.visit(
           `${Cypress.env("BASE_URL_STAGING")}/clients/${clientURN}/websites`
         );
     }
-  });
-
-  beforeEach(() => {
     //Save auth cookies to stay logged in
     Cypress.Cookies.preserveOnce(
       "_g5-cms_session",
@@ -287,12 +277,12 @@ context("Basic Functionalities", () => {
       `//span[.='${pageName}']/following-sibling::span/a[.=' Settings ']`
     )
       .click({ force: true })
-      .wait(5000);
+      .wait(8000);
     cy.get("div.page-layout")
       .find(".sortable-item.ember-view")
       .should("have.length", 2);
   });
 
   //8 TC
-  it("7. Clone remote location to CMS test", () => {});
+  it("8. Clone remote location to CMS test", () => {});
 });
