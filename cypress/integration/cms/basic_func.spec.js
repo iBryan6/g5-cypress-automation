@@ -84,7 +84,7 @@ describe("Unit tests for Basic Functionalities", () => {
     });
 
     //1 TC
-    it.skip("1. Login CMS test", () => {
+    it("1. Login CMS test", () => {
       cy.visit("https://auth.g5search.com");
       //Type Email
       cy.get("#user_email")
