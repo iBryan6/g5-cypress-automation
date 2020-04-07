@@ -1,4 +1,6 @@
-describe("Unit tests for Basic Functionalities", () => {
+describe(`Unit tests for Basic Functionalities in ${Cypress.env(
+  "TESTING_ENV"
+)}`, () => {
   context("Basic Functionalities", () => {
     //VARIABLES
     let env = "";
@@ -22,9 +24,9 @@ describe("Unit tests for Basic Functionalities", () => {
       cy.server();
       cy.request("GET", `${env}/api/clients/${clientURN}`).then((response) => {
         let location = response.body.websites.find(
-          (location) =>
-            location.location_urn === locationURN &&
-            location.name.includes("STAGING") === false
+          (res) =>
+            res.location_urn === locationURN &&
+            res.name.includes("STAGING") === false
         );
         if (location.is_importing === false) {
           cy.request(
@@ -32,8 +34,8 @@ describe("Unit tests for Basic Functionalities", () => {
             `${env}/api/clients/${clientURN}/website_and_page_names`
           ).then((response) => {
             let loc = response.body.find(
-              (loc) =>
-                loc.urn === locationID && loc.name.includes("STAGING") === false
+              (res) =>
+                res.urn === locationID && res.name.includes("STAGING") === false
             );
             if (loc.pageNames[0].name === "Climate Controlled Units")
               cy.log("Cloned Successfully");
@@ -76,16 +78,8 @@ describe("Unit tests for Basic Functionalities", () => {
     });
 
     beforeEach(() => {
-      switch (Cypress.env("TESTING_ENV")) {
-        case "prime":
-          cy.visit(`${env}/clients/${clientURN}/websites`);
-          break;
-        case "prod":
-          cy.visit(`${env}/clients/${clientURN}/websites`);
-          break;
-        default:
-          cy.visit(`${env}/clients/${clientURN}/websites`);
-      }
+      cy.visit(`${env}/clients/${clientURN}/websites`);
+
       //Save auth cookies to stay logged in
       Cypress.Cookies.preserveOnce(
         "_g5-cms_session",
@@ -105,7 +99,9 @@ describe("Unit tests for Basic Functionalities", () => {
       cy.contains("Sign In").click();
       cy.contains("Invalid email or password.").should("be.visible");
       //Type correct password
-      cy.get("#user_password").type(Cypress.env("cms_auth_password"));
+      cy.get("#user_password").type(Cypress.env("cms_auth_password"), {
+        log: false,
+      });
       cy.contains("Sign In").click();
       cy.contains("Signed in successfully.").should("be.visible");
     });

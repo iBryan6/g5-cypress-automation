@@ -11,7 +11,7 @@
         "reportDir": "cypress/report/mochawesome-report",
         "overwrite": false,
         "html": true,
-        "json": true,
+        "json": false,
         "timestamp": "mmddyyyy_HHMMss"
     },
     "videosFolder": "cypress/report/videos",

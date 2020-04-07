@@ -7,3 +7,5 @@ mochawesome-reports/
 mochawesome-report/
 report
 reports
+.DS_Store
+cypress/.DS_Store
