@@ -1,11 +1,13 @@
 describe("Unit tests for Basic Functionalities", () => {
   context("Basic Functionalities", () => {
     //VARIABLES
+    let env = "";
     let pageName = "NEW PAGE";
-    let clientURN = "g5-c-5mc7konuw-ba-test-cave";
-    let locationURN = "g5-clw-1k7e4x0hh3-ba-corporate";
-    let remoteClient = "1-800 Self Storage - Client";
-    let remoteLoc =
+    const clientURN = "g5-c-5g1te7c7n-byron";
+    const locationURN = "g5-cl-1igi6anuy0-corporate";
+    const locationID = "g5-clw-1yktcimk-corporate"; //Just add a w at the end of "g5-cl"
+    const remoteClient = "1-800 Self Storage - Client";
+    const remoteLoc =
       "1-800-SELF-STORAGE.com - 1-800-Self-Storage.com on Greenfield";
 
     //REUSABLE FUNCTIONS
@@ -18,22 +20,22 @@ describe("Unit tests for Basic Functionalities", () => {
 
     const checkWebsiteImporting = () => {
       cy.server();
-      cy.request(
-        "GET",
-        `https://content-management-system-content-staging.g5devops.com/api/clients/${clientURN}`
-      ).then((response) => {
+      cy.request("GET", `${env}/api/clients/${clientURN}`).then((response) => {
         let location = response.body.websites.find(
-          (location) => location.id === locationURN
+          (location) =>
+            location.location_urn === locationURN &&
+            location.name.includes("STAGING") === false
         );
         if (location.is_importing === false) {
           cy.request(
             "GET",
-            `https://content-management-system-content-staging.g5devops.com/api/clients/${clientURN}/website_and_page_names`
+            `${env}/api/clients/${clientURN}/website_and_page_names`
           ).then((response) => {
-            if (
-              response.body[0].urn === locationURN &&
-              response.body[0].pageNames[0].name === "Climate Controlled Units"
-            )
+            let loc = response.body.find(
+              (loc) =>
+                loc.urn === locationID && loc.name.includes("STAGING") === false
+            );
+            if (loc.pageNames[0].name === "Climate Controlled Units")
               cy.log("Cloned Successfully");
           });
         } else {
@@ -47,7 +49,7 @@ describe("Unit tests for Basic Functionalities", () => {
       cy.server();
       cy.request(
         "GET",
-        `https://content-management-system-content-staging.g5devops.com/api/clients/${clientURN}/websites/${locationURN}`
+        `${env}/api/clients/${clientURN}/websites/${locationID}`
       ).then((response) => {
         let page = response.body.pages.find((page) => page.name === pageName);
         if (page.is_importing === false) {
@@ -59,22 +61,30 @@ describe("Unit tests for Basic Functionalities", () => {
       });
     };
 
+    //HOOKS
+    before(() => {
+      switch (Cypress.env("TESTING_ENV")) {
+        case "prime":
+          env = Cypress.env("BASE_URL_PRIME");
+          break;
+        case "prod":
+          env = Cypress.env("BASE_URL_PROD");
+          break;
+        default:
+          env = Cypress.env("BASE_URL_STAGING");
+      }
+    });
+
     beforeEach(() => {
       switch (Cypress.env("TESTING_ENV")) {
         case "prime":
-          cy.visit(
-            `${Cypress.env("BASE_URL_PRIME")}/clients/${clientURN}/websites`
-          );
+          cy.visit(`${env}/clients/${clientURN}/websites`);
           break;
         case "prod":
-          cy.visit(
-            `${Cypress.env("BASE_URL_PROD")}/clients/${clientURN}/websites`
-          );
+          cy.visit(`${env}/clients/${clientURN}/websites`);
           break;
         default:
-          cy.visit(
-            `${Cypress.env("BASE_URL_STAGING")}/clients/${clientURN}/websites`
-          );
+          cy.visit(`${env}/clients/${clientURN}/websites`);
       }
       //Save auth cookies to stay logged in
       Cypress.Cookies.preserveOnce(
