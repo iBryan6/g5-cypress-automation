@@ -16,7 +16,7 @@
     "cypress-xpath": "^1.4.0"
   },
   "dependencies": {
-    "mocha": "^7.1.1",
+    "mocha": "^10.2.0",
     "mochawesome": "^5.0.0"
   }
 }
